@@ -23,7 +23,7 @@ public class DumbPasswords {
         Scanner in = new Scanner(System.in);
         System.out.print("Enter m: ");
         m = in.nextInt();
-        System.out.print("Enter m: ");
+        System.out.print("Enter n: ");
         n = in.nextInt();
         printDumbPasswords(m,n);
     }
