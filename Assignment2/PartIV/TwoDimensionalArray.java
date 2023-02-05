@@ -18,7 +18,7 @@ public class TwoDimensionalArray {
          * each array in twoDimArray, and one loop to loop over each element
          * in that array
          */
-        for (int i = 0; i < twoDimArray.length; i++) {
+        for (int i = 0; i < twoDimArray.length; i++) {      //Since the question statement asks us to use nested loops
             for (int j = 0; j < twoDimArray[i].length; j++) {
                 if (i == 0) {
                     twoDimArray[i][j] = arrayOne[j];

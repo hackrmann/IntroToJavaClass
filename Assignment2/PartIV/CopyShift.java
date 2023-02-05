@@ -36,7 +36,7 @@ public class CopyShift {
             sourceArray[i] = (int) (Math.random() * 100);
         }
 
-        int shiftValue = 0;
+        int shiftValue = 5;
         copyShift(sourceArray, destArray, shiftValue);
 
         /* destArray should have the contents of sourceArray

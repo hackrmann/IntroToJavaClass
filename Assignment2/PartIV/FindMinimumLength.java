@@ -3,46 +3,23 @@ import java.util.Arrays;
 
 class FindMinimumLength {
 
-    public static void swap(int[] array, int index1, int index2) {
-        int temp = array[index1];
-        array[index1] = array[index2];
-        array[index2] = temp;
-    }
-
-    public static void heapSort(int[] array) {
-        for (int i = array.length / 2 - 1; i > -1; i--)
-            heapify(array, array.length, i);
-
-        for (int i = array.length - 1; i > -1; i--) {
-            swap(array, 0, i);
-            heapify(array, i, 0);
-        }
-    }
-
-    private static void heapify(int[] array, int n, int i) {
-        int largest = i, left = 2 * i + 1, right = 2 * i + 2;
-
-        if (left < n && array[left] > array[largest]) largest = left;
-        if (right < n && array[right] > array[largest]) largest = right;
-
-        if (largest != i) {
-            swap(array, i, largest);
-            heapify(array, n, largest);
-        }
-    }
-
     public static int minSubArrayLen(int goal, int[] nums) {
-        int minimumLength = 0;
-        int sum = 0;
-        heapSort(nums);
+        int minimumLength = Integer.MAX_VALUE;
+        int sum = 0, beginWindow = 0, presentWindow = 0, endWindow = 0;
 //        System.out.println(Arrays.toString(nums));
-        for (int i = nums.length - 1; i > -1; i--) {
-            sum += nums[i];
-            minimumLength++;
+        for (endWindow = 1; endWindow <= nums.length; endWindow++) {
+            sum += nums[endWindow-1];
+            presentWindow = beginWindow;
             if (sum >= goal) {
-                break;
+                while (sum >= goal) {
+                    sum -= nums[presentWindow++];
+                }
+                beginWindow = presentWindow - 1;
+                sum+= nums[beginWindow];
+                minimumLength = Integer.min(minimumLength, endWindow - beginWindow);
             }
         }
+        if (minimumLength == Integer.MAX_VALUE) return 0;
         return minimumLength;
     }
 
