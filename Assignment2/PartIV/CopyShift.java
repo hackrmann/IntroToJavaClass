@@ -16,12 +16,13 @@ public class CopyShift {
     }
 
     public static void copyShift(int[] sourceArray, int[] destArray, int shift) {
-        shift = (shift % sourceArray.length + sourceArray.length) % sourceArray.length;
-        int justBeforeShift = (shift - 1 + sourceArray.length) % sourceArray.length;
+        int n = sourceArray.length;
+        shift = (shift % n + n) % n;                //Handles negative values of shift too, and values greater than n
+        int justBeforeShift = (shift - 1 + n) % n;
 
-        for (int i = shift; i != justBeforeShift; i = (i + 1) % sourceArray.length)
-            destArray[i] = sourceArray[(i - shift + sourceArray.length) % sourceArray.length];
-        destArray[justBeforeShift] = sourceArray[sourceArray.length - 1];
+        for (int i = shift; i != justBeforeShift; i = (i + 1) % n)
+            destArray[i] = sourceArray[(i - shift + n) % n];
+        destArray[justBeforeShift] = sourceArray[n - 1];
 
         printArrays(sourceArray, destArray);
     }

@@ -9,7 +9,7 @@ public class LoopSum {
             fact = (++k) * fact;
             diff = Math.abs(expActualValue - result);
         }
-        System.out.println("resut for " + k + " iterations: " + result+diff);
+        System.out.println("result for " + k + " iterations: " + result+diff);
         return k;
     }
 
