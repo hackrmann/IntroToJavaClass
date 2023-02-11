@@ -3,12 +3,16 @@ import java.util.Scanner;
 public class Bank {
 
 	public static final int NUM_ACCOUNTS = 5;
-	
-	
+	Account[] accounts;
+
 	public Bank() {
 		// create NUM_ACCOUNTS accounts in an array
 		// with each account having a starting balance
 		// of $1000
+		accounts = new Account[NUM_ACCOUNTS];
+		for (Account account: accounts) {
+			account = new Account(1000);
+		}
 	}
 	
 	public Account getAccountById(int id) {
@@ -18,14 +22,20 @@ public class Bank {
 		// it finds the account matching the id
 		// and returns it, returning null if
 		// it is not found
-		
+		for (Account account: accounts) {
+			if(account.getId()==id) return account;
+		}
 		return null;
 	}
 	
 	public int numAccounts() {
 		// returns the number of accounts:
 		// ie, the length of the array accounts
-		return 0;
+		return NUM_ACCOUNTS;
+	}
+
+	public Account[] getAllAccounts() {
+		return accounts;
 	}
 	
 	public static void main(String[] args) {
