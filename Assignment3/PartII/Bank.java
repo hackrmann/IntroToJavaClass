@@ -3,15 +3,15 @@ import java.util.Scanner;
 public class Bank {
 
 	public static final int NUM_ACCOUNTS = 5;
-	Account[] accounts;
+	private Account[] accounts;
 
 	public Bank() {
 		// create NUM_ACCOUNTS accounts in an array
 		// with each account having a starting balance
 		// of $1000
 		accounts = new Account[NUM_ACCOUNTS];
-		for (Account account: accounts) {
-			account = new Account(1000);
+		for (int i =0;i<NUM_ACCOUNTS;i++) {
+			accounts[i] = new Account(1000);
 		}
 	}
 	
@@ -35,6 +35,12 @@ public class Bank {
 	}
 
 	public Account[] getAllAccounts() {
+		try {
+			accounts[0].getId();			//Check if atleast one account is registered
+		}
+		catch (NullPointerException e) {
+			System.out.println("There are no accounts registered!");
+		}
 		return accounts;
 	}
 	

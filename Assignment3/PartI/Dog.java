@@ -35,7 +35,7 @@ public class Dog {
     }
 
     public static boolean hasSameOwner(Dog dog1, Dog dog2) {
-        if (!dog1.owner.equals(dog2.owner)) return false;
+        if (!dog1.owner.toUpperCase().equals(dog2.owner.toUpperCase())) return false;
         return true;
     }
 
@@ -55,6 +55,22 @@ public class Dog {
         Dog[] dogs = new Dog[5];
         dogs[0] = new Dog(4, "Stephen Colbert", "Boxer");
         dogs[1] = new Dog(8, "Dexter Morgan", "Corgi");
+        dogs[2] = new Dog(2, "John Wick", "Dead");
+        dogs[3] = new Dog(46, "Cat", "Dachshund");
+        dogs[4] = new Dog(11, "Stephen Colbert", "German Shepherd");
 
+        for (Dog dog:dogs) {
+            System.out.println(dog.toString());
+        }
+        System.out.println();
+        System.out.println("Average age of dogs: "+Dog.avgAge(dogs)+" years");
+        System.out.println(dogs[0].getBreed()+" and "+dogs[4].getBreed()+" have the same owner: "+Dog.hasSameOwner(dogs[0], dogs[4]));
+        System.out.println(dogs[1].getBreed()+" and "+dogs[3].getBreed()+" have the same owner: "+Dog.hasSameOwner(dogs[1], dogs[3]));
+
+        dogs[0].setAge(22);
+        dogs[0].setBreed("Pomeranian");
+        dogs[0].setOwner("Somebody");
+        System.out.println(dogs[0].toString());
     }
+
 }
