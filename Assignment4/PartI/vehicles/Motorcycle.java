@@ -1,5 +1,7 @@
 package vehicles;
 
+import java.util.Arrays;
+
 public class Motorcycle extends Vehicle {
     private String[] accessories;
 
@@ -24,6 +26,14 @@ public class Motorcycle extends Vehicle {
     public boolean equals(Object o) {
         if (o == null) return false;
         Motorcycle motorcycle = (Motorcycle) o;
-        return (this.accessories == motorcycle.getAccessories()) ? super.equals(o) : false;
+        return (helpCompare(this.accessories, motorcycle.accessories)) ? super.equals(o) : false;
+    }
+
+    public boolean helpCompare(String[] s1, String[] s2) {
+        if (s1.length != s2.length) return false;
+        for (int i = 0; i < s1.length; i++) {
+            if (s1[i] != s2[i]) return false;
+        }
+        return true;
     }
 }

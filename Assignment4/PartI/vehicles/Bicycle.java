@@ -14,7 +14,7 @@ public class Bicycle extends Vehicle {
     public boolean equals(Object o) {
         if (o == null) return false;
         Bicycle bicycle = (Bicycle) o;
-        return (this.type == bicycle.type) ? super.equals(o) : false;
+        return (this.type == bicycle.getType()) ? super.equals(o) : false;
     }
 
     Bicycle(int numberOfWheels, float cargoSpace) {
