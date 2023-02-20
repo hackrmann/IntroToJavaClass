@@ -5,6 +5,11 @@ import java.util.Arrays;
 public class Motorcycle extends Vehicle {
     private String[] accessories;
 
+    public Motorcycle(String[] accessories) {
+        super();
+        this.accessories = accessories;
+    }
+
     public String TwistThrottle() {
         return "accelerating";
     }
@@ -19,7 +24,7 @@ public class Motorcycle extends Vehicle {
 
     public String toString() {
         String s = "Motorcycle:\n\t" + super.toString() + "\n";
-        s = s + "\tAccessories: " + accessories.toString();
+        s = s + "\tAccessories: " + printAccessories();
         return s;
     }
 
@@ -35,5 +40,14 @@ public class Motorcycle extends Vehicle {
             if (s1[i] != s2[i]) return false;
         }
         return true;
+    }
+
+    public String printAccessories() {
+        String s = "[";
+        for (int i = 0; i < this.accessories.length - 1; i++) {
+            s += this.accessories[i] + ", ";
+        }
+        s += this.accessories[this.accessories.length - 1] + "]";
+        return s;
     }
 }

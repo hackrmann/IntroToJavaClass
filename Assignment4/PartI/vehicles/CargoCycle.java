@@ -1,8 +1,8 @@
 package vehicles;
 
 public class CargoCycle extends Bicycle {
-    public CargoCycle(int numberOfWheels, float cargoSpace) {
-        super(numberOfWheels, cargoSpace);
+    public CargoCycle(int numberOfWheels, int cargoSpace, String color) {
+        super(numberOfWheels, cargoSpace, color);
     }
 
     public boolean equals(Object o) {

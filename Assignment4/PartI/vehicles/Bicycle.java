@@ -6,8 +6,8 @@ public class Bicycle extends Vehicle {
 
     private String type;
 
-    public Bicycle() {
-        super(2, 0);
+    public Bicycle(String color) {
+        super(2, 0, color);
         type = "electric";
     }
 
@@ -17,8 +17,8 @@ public class Bicycle extends Vehicle {
         return (this.type == bicycle.getType()) ? super.equals(o) : false;
     }
 
-    Bicycle(int numberOfWheels, float cargoSpace) {
-        super(numberOfWheels, cargoSpace);
+    Bicycle(int numberOfWheels, int cargoSpace, String color) {
+        super(numberOfWheels, cargoSpace, color);
         type = "electric";
         if (!(this instanceof CargoCycle)) {
             System.out.println("Bicycles can only have 2 wheels and no cargo space!");

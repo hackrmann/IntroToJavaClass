@@ -4,12 +4,12 @@ public class Car extends Vehicle {
     int numberOfDoors;
 
     public Car(int numberOfDoors) {
-        this(100, numberOfDoors);
+        this(100, numberOfDoors, "black");
     }
 
-    public Car(float cargoSpace, int numberOfDoors) {
-        super(4, cargoSpace);
-        if (numberOfDoors != 2 || numberOfDoors != 4) {
+    public Car(int cargoSpace, int numberOfDoors, String color) {
+        super(4, cargoSpace, color);
+        if (!(numberOfDoors == 2 || numberOfDoors == 4)) {
             System.out.println("Cars can only have 2 or 4 doors, please enter a valid number of doors");
             return;
         }
@@ -35,7 +35,7 @@ public class Car extends Vehicle {
     }
 
     public boolean equals(Object o) {
-        if (o == null) return false;
+        if (o == null || !(o instanceof Car)) return false;
         Car car = (Car) o;
         return (this.numberOfDoors == car.getNumberOfDoors()) ? super.equals(o) : false;
     }

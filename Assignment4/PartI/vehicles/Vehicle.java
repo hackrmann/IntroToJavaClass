@@ -2,19 +2,23 @@ package vehicles;
 
 public class Vehicle {
     private int numberOfWheels;
-    private float cargoSpace;       //Assume in litres
+    private int cargoSpace;       //Assume in litres
 
     private String color;
 
-    private static int id = 0;
+    private static int next_id = 0;
+
+    private int id = 0;
 
     public Vehicle() {
-        this(2,0);
+        this(2, 0, "black");
     }
-    public Vehicle(int numberOfWheels, float cargoSpace) {
+
+    public Vehicle(int numberOfWheels, int cargoSpace, String color) {
         this.numberOfWheels = numberOfWheels;
         this.cargoSpace = cargoSpace;
-        ++id;
+        this.color = color;
+        this.id = ++next_id;
     }
 
     public int getNumberOfWheels() {
@@ -29,7 +33,7 @@ public class Vehicle {
         return cargoSpace;
     }
 
-    public void setCargoSpace(float cargoSpace) {
+    public void setCargoSpace(int cargoSpace) {
         this.cargoSpace = cargoSpace;
     }
 
@@ -42,20 +46,20 @@ public class Vehicle {
     }
 
     public String toString() {
-        String s = "Vehicle:\n";
-        s = s + "\tNumber of Wheels: " + numberOfWheels;
-        s = s + "\tCargo Space: " + cargoSpace;
-        s = s + "\tColor: " + color;
-        s = s + "\tID: " + id;
+        String s = "Vehicle:";
+        s = s + "\n\t\tNumber of Wheels: " + numberOfWheels;
+        s = s + "\n\t\tCargo Space: " + cargoSpace;
+        s = s + "\n\t\tColor: " + color;
+        s = s + "\n\t\tID: " + id;
         return s;
     }
 
     public boolean equals(Object o) {
         if (o == null) return false;
         Vehicle vehicle = (Vehicle) o;
-        if(this.numberOfWheels == vehicle.getNumberOfWheels())
-            if(this.cargoSpace == vehicle.getCargoSpace())
-                if(this.color.equals(vehicle.getColor()))
+        if (this.numberOfWheels == vehicle.getNumberOfWheels())
+            if (this.cargoSpace == vehicle.getCargoSpace())
+                if (this.color.equals(vehicle.getColor()))
                     return true;
         return false;
     }
