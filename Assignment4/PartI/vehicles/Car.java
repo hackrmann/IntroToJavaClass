@@ -3,10 +3,6 @@ package vehicles;
 public class Car extends Vehicle {
     int numberOfDoors;
 
-    public Car(int numberOfDoors) {
-        this(100, numberOfDoors, "black");
-    }
-
     public Car(int cargoSpace, int numberOfDoors, String color) {
         super(4, cargoSpace, color);
         if (!(numberOfDoors == 2 || numberOfDoors == 4)) {

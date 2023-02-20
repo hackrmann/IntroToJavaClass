@@ -19,7 +19,6 @@ public class Bicycle extends Vehicle {
 
     Bicycle(int numberOfWheels, int cargoSpace, String color) {
         super(numberOfWheels, cargoSpace, color);
-        type = "electric";
         if (!(this instanceof CargoCycle)) {
             System.out.println("Bicycles can only have 2 wheels and no cargo space!");
             super.setNumberOfWheels(2);

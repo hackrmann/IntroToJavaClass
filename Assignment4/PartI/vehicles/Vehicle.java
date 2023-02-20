@@ -2,7 +2,7 @@ package vehicles;
 
 public class Vehicle {
     private int numberOfWheels;
-    private int cargoSpace;       //Assume in litres
+    private int cargoSpace;       //Assume in cubic feet
 
     private String color;
 

@@ -5,8 +5,8 @@ import java.util.Arrays;
 public class Motorcycle extends Vehicle {
     private String[] accessories;
 
-    public Motorcycle(String[] accessories) {
-        super();
+    public Motorcycle(String[] accessories, String color) {
+        super(2, 0, color);
         this.accessories = accessories;
     }
 
