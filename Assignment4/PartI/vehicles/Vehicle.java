@@ -14,6 +14,10 @@ public class Vehicle {
         this(2, 0, "black");
     }
 
+    public int getId() {
+        return id;
+    }
+
     public Vehicle(int numberOfWheels, int cargoSpace, String color) {
         this.numberOfWheels = numberOfWheels;
         this.cargoSpace = cargoSpace;

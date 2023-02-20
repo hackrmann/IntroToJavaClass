@@ -12,7 +12,7 @@ public class CargoCycle extends Bicycle {
     }
 
     public String toString() {
-        String s = "Cargo cycle:\n\t" + super.toString() + "\n";
+        String s = "Cargo cycle:\n\t" + super.toString();
         return s;
     }
 
