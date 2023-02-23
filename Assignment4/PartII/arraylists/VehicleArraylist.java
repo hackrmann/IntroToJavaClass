@@ -12,20 +12,21 @@ public class VehicleArraylist {
 
         // this is the variable you should retain to compare
         // to the other objects in the arraylist
-        Car blueCar = null;
+        Car blueCar;
 
-        insertElements(vehiclesArrayList);
+        vehiclesArrayList.add(new Motorcycle(new String[]{"grip warmers", "usb charger"}, "red"));
+        blueCar = new Car(20, 4, "blue");
+        vehiclesArrayList.add(blueCar);
+        vehiclesArrayList.add(new Car(20, 4, "blue"));
+        vehiclesArrayList.add(new Bicycle("black"));
+        vehiclesArrayList.add(new CargoCycle(3, 10, "green"));
+        vehiclesArrayList.add(new CargoCycle(3, 10, "green"));
+        vehiclesArrayList.add(new Car(10, 2, "grey"));
+        vehiclesArrayList.add(new Car(25, 4, "white"));
+
         System.out.println("--------------");
         getAverageCargoSpace(vehiclesArrayList);
         System.out.println("--------------");
-        for (Vehicle vehicle : vehiclesArrayList) {
-            if (vehicle instanceof Car) {
-                if (vehicle.getColor().equals("blue") && ((Car) vehicle).getNumberOfDoors() == 4 && vehicle.getCargoSpace() == 20) {
-                    blueCar = (Car) vehicle;
-                    break;
-                }
-            }
-        }
         removeDuplicates(vehiclesArrayList, blueCar);
         System.out.println("--------------");
         displayAllVehicles(vehiclesArrayList);
@@ -33,16 +34,6 @@ public class VehicleArraylist {
 
     }
 
-    public static void insertElements(ArrayList<Vehicle> vehiclesArrayList) {
-        vehiclesArrayList.add(new Motorcycle(new String[]{"grip warmers", "usb charger"}, "red"));
-        vehiclesArrayList.add(new Car(20, 4, "blue"));
-        vehiclesArrayList.add(new Car(20, 4, "blue"));
-        vehiclesArrayList.add(new Bicycle("black"));
-        vehiclesArrayList.add(new CargoCycle(3, 10, "green"));
-        vehiclesArrayList.add(new CargoCycle(3, 10, "green"));
-        vehiclesArrayList.add(new Car(10, 2, "grey"));
-        vehiclesArrayList.add(new Car(25, 4, "white"));
-    }
 
     public static void getAverageCargoSpace(ArrayList<Vehicle> vehiclesArrayList) {
         int sumCargoSpace = 0, noOfCars = 0;
@@ -55,6 +46,7 @@ public class VehicleArraylist {
         System.out.println("Average cargo space of all cars is: " + (sumCargoSpace / (float) noOfCars));
     }
 
+//      Function to remove ALL duplicates of any vehicle in the array
 //    public static void removeDuplicates(ArrayList<Vehicle> vehiclesArrayList) {
 //        Car blueCar;
 //        for (int i = 0; i < vehiclesArrayList.size(); i++) {
@@ -73,16 +65,11 @@ public class VehicleArraylist {
 
     public static void removeDuplicates(ArrayList<Vehicle> vehicleArrayList, Car blueCar) {
         for (int j = vehicleArrayList.size() - 1; j > -1; j--) {
-            if (vehicleArrayList.get(j) instanceof Car) {
-                if (vehicleArrayList.get(j).equals(blueCar)) {
-                    if (vehicleArrayList.get(j).getId() == blueCar.getId()) {
-                        System.out.println("Found same element in arrayList!");
-                        System.out.println(vehicleArrayList.get(j).toString());
-                        continue;
-                    } else {
-                        vehicleArrayList.remove(j);
-                    }
-                }
+            if (blueCar.equals(vehicleArrayList.get(j))) {
+                if (vehicleArrayList.get(j).getId() == blueCar.getId())
+                    System.out.println("Found same object in arrayList!");
+                System.out.println("Removed: " + vehicleArrayList.get(j).toString());
+                vehicleArrayList.remove(j);
             }
         }
     }
