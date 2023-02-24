@@ -1,5 +1,6 @@
 package vehicles;
 
+import java.lang.module.ModuleReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,7 +33,7 @@ public class Motorcycle extends Vehicle {
     }
 
     public boolean equals(Object o) {
-        if (o == null) return false;
+        if (o == null || !(o instanceof Motorcycle)) return false;
         Motorcycle motorcycle = (Motorcycle) o;
         return (helpCompare(this.accessories, motorcycle.accessories)) ? super.equals(o) : false;
     }

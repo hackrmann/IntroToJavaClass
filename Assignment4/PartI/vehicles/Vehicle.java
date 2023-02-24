@@ -59,7 +59,7 @@ public class Vehicle {
     }
 
     public boolean equals(Object o) {
-        if (o == null) return false;
+        if (o == null || !(o instanceof Vehicle)) return false;
         Vehicle vehicle = (Vehicle) o;
         if (this.numberOfWheels == vehicle.getNumberOfWheels())
             if (this.cargoSpace == vehicle.getCargoSpace())

@@ -6,7 +6,7 @@ public class CargoCycle extends Bicycle {
     }
 
     public boolean equals(Object o) {
-        if (o == null) return false;
+        if (o == null || !(o instanceof CargoCycle)) return false;
         CargoCycle cargoCycle = (CargoCycle) o;
         return super.equals(cargoCycle);
     }

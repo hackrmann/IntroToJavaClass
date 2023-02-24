@@ -12,7 +12,7 @@ public class Bicycle extends Vehicle {
     }
 
     public boolean equals(Object o) {
-        if (o == null) return false;
+        if (o == null || !(o instanceof Bicycle)) return false;
         Bicycle bicycle = (Bicycle) o;
         return (this.type == bicycle.getType()) ? super.equals(o) : false;
     }
