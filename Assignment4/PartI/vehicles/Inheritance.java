@@ -6,6 +6,7 @@ public class Inheritance {
 		// Here's some scratch space to experiment/debug your Employee objects
 		// note-- do not use this particular class for anything. the intent
 		// is to use this main method to write some scratch code.
+
 	}
 
 }
