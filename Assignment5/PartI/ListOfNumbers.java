@@ -112,7 +112,9 @@ public class ListOfNumbers {
     public static void main(String[] args) {
         ListOfNumbers listOfNumbers = new ListOfNumbers("numberfile.txt");
         try {
-            ListOfNumbers.cat("numberfile.txt");
+            listOfNumbers.createList();                     //Generate new random numbers and populate list
+            listOfNumbers.writeList();                      //Write the generated random list of numbers in the given filename
+            ListOfNumbers.cat("numberfile.txt");   //Read the written file and print all contents in the console
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
