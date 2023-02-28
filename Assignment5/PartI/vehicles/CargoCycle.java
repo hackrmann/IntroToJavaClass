@@ -1,7 +1,13 @@
 package vehicles;
 
+import vehicles.exceptions.VehicleException;
+
 public class CargoCycle extends Bicycle {
-    public CargoCycle(int numberOfWheels, int cargoSpace, String color) {
+
+    public CargoCycle() throws VehicleException {
+        super();
+    }
+    public CargoCycle(int numberOfWheels, int cargoSpace, String color) throws VehicleException {
         super(numberOfWheels, cargoSpace, color);
     }
 

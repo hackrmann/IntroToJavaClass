@@ -1,5 +1,7 @@
 package vehicles;
 
+import vehicles.exceptions.VehicleException;
+
 import java.lang.module.ModuleReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,7 +11,12 @@ import java.util.List;
 public class Motorcycle extends Vehicle {
     private String[] accessories;
 
-    public Motorcycle(String[] accessories, String color) {
+    public Motorcycle() throws VehicleException {
+        super();
+        this.accessories = null;
+    }
+
+    public Motorcycle(String[] accessories, String color) throws VehicleException {
         super(2, 0, color);
         this.accessories = accessories;
     }
@@ -29,6 +36,7 @@ public class Motorcycle extends Vehicle {
     public String toString() {
         String s = "Motorcycle:\n\t" + super.toString() + "\n";
         s = s + "\tAccessories: " + printAccessories();
+        s += "\n";
         return s;
     }
 
@@ -56,10 +64,13 @@ public class Motorcycle extends Vehicle {
 
     public String printAccessories() {
         String s = "[";
-        for (int i = 0; i < this.accessories.length - 1; i++) {
-            s += this.accessories[i] + ", ";
+        if (this.accessories != null) {
+            for (int i = 0; i < this.accessories.length - 1; i++) {
+                s += this.accessories[i] + ", ";
+            }
+            s += this.accessories[this.accessories.length - 1];
         }
-        s += this.accessories[this.accessories.length - 1] + "]";
+        s += "]";
         return s;
     }
 }

@@ -1,5 +1,7 @@
 package vehicles;
 
+import vehicles.exceptions.VehicleException;
+
 public class Vehicle {
     private int numberOfWheels;
     private int cargoSpace;       //Assume in cubic feet
@@ -10,15 +12,18 @@ public class Vehicle {
 
     private int id = 0;
 
-    public Vehicle() {
-        this(2, 0, "black");
+    public Vehicle() throws VehicleException {
+        this(2, 0, "");
     }
 
     public int getId() {
         return id;
     }
 
-    public Vehicle(int numberOfWheels, int cargoSpace, String color) {
+    public Vehicle(int numberOfWheels, int cargoSpace, String color) throws VehicleException {
+        if(cargoSpace<0) {
+            throw new VehicleException("Cargo space cannot be negative!");
+        }
         this.numberOfWheels = numberOfWheels;
         this.cargoSpace = cargoSpace;
         this.color = color;

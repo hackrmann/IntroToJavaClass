@@ -1,13 +1,21 @@
 package vehicles;
 
+import vehicles.exceptions.VehicleException;
+
 import java.util.Objects;
 
 public class Bicycle extends Vehicle {
 
     private String type;
 
-    public Bicycle(String color) {
-        super(2, 0, color);
+    public Bicycle() throws VehicleException {
+        super();
+        type = "electric";
+    }
+
+    public Bicycle(String color) throws VehicleException {
+        this();
+        super.setColor(color);
         type = "electric";
     }
 
@@ -17,13 +25,11 @@ public class Bicycle extends Vehicle {
         return (this.type == bicycle.getType()) ? super.equals(o) : false;
     }
 
-    Bicycle(int numberOfWheels, int cargoSpace, String color) {
+    Bicycle(int numberOfWheels, int cargoSpace, String color) throws VehicleException {
         super(numberOfWheels, cargoSpace, color);
         type = "electric";
         if (!(this instanceof CargoCycle)) {
-            System.out.println("Bicycles can only have 2 wheels and no cargo space!");
-            super.setNumberOfWheels(2);
-            super.setCargoSpace(0);
+            throw new VehicleException("Bicycles can only have 2 wheels and no cargo space!");
         }
     }
 
@@ -43,6 +49,7 @@ public class Bicycle extends Vehicle {
     public String toString() {
         String s = "Bicycle:\n\t" + super.toString() + "\n";
         s = s + "\tType: " + type;
+        s += "\n";
         return s;
     }
 }
