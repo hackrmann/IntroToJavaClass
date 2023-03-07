@@ -1,4 +1,5 @@
 package university;
 
-public class Employee {
+public abstract class Employee {
+    public int salary;
 }

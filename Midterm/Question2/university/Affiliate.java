@@ -1,4 +1,4 @@
 package university;
 
-public class Affiliate {
+public class Affiliate extends Person {
 }
