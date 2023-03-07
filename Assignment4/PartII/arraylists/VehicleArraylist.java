@@ -64,7 +64,7 @@ public class VehicleArraylist {
     public static void removeDuplicates(ArrayList<Vehicle> vehicleArrayList, Car blueCar) {
         for (int j = vehicleArrayList.size() - 1; j > -1; j--) {
             if (blueCar.equals(vehicleArrayList.get(j))) {
-                if (vehicleArrayList.get(j).getId() == blueCar.getId())
+                if (vehicleArrayList.get(j) == blueCar)
                     System.out.println("Found same object in arrayList!");
                 System.out.println("Removed: " + vehicleArrayList.get(j).toString());
                 vehicleArrayList.remove(j);
