@@ -54,17 +54,18 @@ public class ComplexMatrix {
         if (!(this.n == cm_rows)) {
             throw new MatrixDimensionException("MatrixDimensionException caught: Second matrix should have the same number of rows as the number of columns of first matrix, but instead it has shape (" + cm.getRows() + ", " + cm.getColumns() + ")");
         }
+        ComplexMatrix multipliedMatrix = new ComplexMatrix(this.m, cm.getColumns());
         Complex result = new Complex();
         for (int i = 0; i < this.m; i++) {
             result.setRealAndImaginary(0, 0);
-            for (int j = 0; j < this.n; j++) {
+            for (int j = 0; j < cm.getColumns(); j++) {
                 for (int k = 0; k < cm_rows; k++) {
-                    result = result.add(this.complex[i][j].multiply(cm.getComplex()[j][k]));
+                    result = result.add(this.complex[i][k].multiply(cm.getComplex()[k][j]));
                 }
-                this.complex[i][j].setRealAndImaginary(result.getReal(), result.getImaginary());
+                multipliedMatrix.complex[i][j].setRealAndImaginary(result.getReal(), result.getImaginary());
             }
         }
-        return this;
+        return multipliedMatrix;
     }
 
     public static ComplexMatrix read(String fileName) throws IncompatibleMatrixException {
@@ -109,12 +110,42 @@ public class ComplexMatrix {
         for (int i = 0; i < numberOfRows; i++) {
             column = complexNumbers.get(i).size();
             if (column != numberOfColumns)
-                throw new IncompatibleMatrixException("IncompatibleMatrixException caught while reading file " + fileName + ": Matrix does not have the right dimensions");
+                throw new IncompatibleMatrixException("IncompatibleMatrixException caught while reading file " + fileName + ": Matrix does not have consistent dimensions. Check row "+(i+1)+" and column "+(column+1));
             for (int j = 0; j < column; j++) {
                 complexMatrix.complex[i][j] = complexNumbers.get(i).get(j);
             }
         }
         return complexMatrix;
+    }
+
+    public void write(String fileName) {
+        File f = new File(fileName);
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+        String line = "";
+
+        try {
+            fileWriter = new FileWriter(f);
+            bufferedWriter = new BufferedWriter(fileWriter);
+        } catch (FileNotFoundException fne) {
+            System.err.println("File does not exist!");
+            System.exit(1);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        for (int i = 0; i < this.m; i++) {
+            for (int j = 0; j < this.n; j++) {
+                line += this.complex[i][j].getReal()+"_"+this.complex[i][j].getImaginary() + " ";
+            }
+            line+= "\n";
+        }
+        try {
+            bufferedWriter.write(line);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String toString() {
@@ -158,5 +189,7 @@ public class ComplexMatrix {
         } catch (MatrixDimensionException mde) {
             mde.toString();
         }
+        System.out.println("Writing matrix c1 to file written_output.txt....");
+        c1.write("written_output.txt");
     }
 }
