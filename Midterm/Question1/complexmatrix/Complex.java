@@ -8,15 +8,21 @@ public class Complex implements Comparable {
     public double b;
 
     public Complex() {
-
+        this(0, 0);
     }
 
     public Complex(double a) {
-
+        this(a, 0);
     }
 
     public Complex(double a, double b) {
+        this.a = a;
+        this.b = b;
+    }
 
+    public void setRealAndImaginary(double a, double b) {
+        this.a = a;
+        this.b = b;
     }
 
     public double getReal() {
@@ -36,10 +42,12 @@ public class Complex implements Comparable {
     }
 
     public String toString() {
-        String signOfImaginary = "+";
+        String signOfImaginary;
         if (this.b < 0)
-            signOfImaginary = "-";
-        return this.a + " " + signOfImaginary + " i" + this.b;
+            signOfImaginary = "- i" + String.format("%.2f", Math.abs(this.b));
+        else
+            signOfImaginary = "+ i" + String.format("%.2f", this.b);
+        return String.format("%.2f", this.a) + " " + signOfImaginary;
     }
 
     public double getMagnitude() {
