@@ -191,5 +191,11 @@ public class ComplexMatrix {
         }
         System.out.println("Writing matrix c1 to file written_output.txt....");
         c1.write("written_output.txt");
+        try {
+            ComplexMatrix c4 = c1.read("written_output.txt");
+            System.out.println(c4.toString());
+        } catch (IncompatibleMatrixException e) {
+            e.toString();
+        }
     }
 }
