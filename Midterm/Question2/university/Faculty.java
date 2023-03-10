@@ -14,7 +14,7 @@ public class Faculty extends Employee {
     public String toString() {
         String s = "Type: " + this.getClass().getSimpleName() + "\n" +
                 "Tenured: " + (tenureTrack ? "Yes" : "No") + "\n" +
-                "Department:" + this.department + "\n" + super.toString();
+                "Department: " + this.department + "\n" + super.toString();
         return s;
     }
     public boolean equals(Object object) {
