@@ -18,19 +18,20 @@ public class SortFrequency {
         System.out.println("Map: "+map);
         ar.removeAll(ar);
         int[] marked = new int[10];
-        int minFreq = -1, j, k = -1;
+        int minFreq = -1, j, k = -1, num = -1;
         for (int i = 0; i < 10; i++) {
             minFreq = Integer.MAX_VALUE;
             for (j = 0; j < 10; j++) {
                 if (marked[j] == 0) {
                     if (map.get(j) < minFreq) {
-                        minFreq = j;
+                        minFreq = map.get(j);
+                        num = j;
                     }
                 }
             }
-            marked[minFreq] = 1;
-            for (k=0; k < map.get(minFreq); k++) {
-                ar.add(minFreq);
+            marked[num] = 1;
+            for (k=0; k < minFreq; k++) {
+                ar.add(num);
             }
         }
     }
