@@ -3,7 +3,6 @@ package PartI;
 public class BalancedParentheses {
 
 	public static boolean isBalanced(String inString) {
-		boolean result = true;
 		MyStack<Character> stack = new MyStack<>();
 
 		for (int i=0;i<inString.length();i++) {
@@ -12,9 +11,8 @@ public class BalancedParentheses {
 					stack.push(inString.charAt(i));
 					break;
 				case ')':
-					if(!stack.empty()) {
+					if(!stack.empty())
 						stack.pop();
-					}
 					else
 						return false;
 					break;
