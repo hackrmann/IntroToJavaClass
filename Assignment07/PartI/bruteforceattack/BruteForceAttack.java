@@ -35,7 +35,6 @@ public class BruteForceAttack implements Runnable {
 
     public static char getChar(int i) {
         return letters[i];
-
     }
 
     public static String bytesToHex(byte[] hash) {
@@ -122,7 +121,7 @@ public class BruteForceAttack implements Runnable {
                 String hashpass = BruteForceAttack.bytesToHex(encodedhash);
                 if (passwordSet.contains(hashpass)) {
                     String passString = new String(pass);
-//                System.out.println("found password " + passString);
+                    System.out.println("found password " + passString);
                     numfound++;
                 }
                 //System.out.println(new String(pass));
@@ -197,7 +196,7 @@ public class BruteForceAttack implements Runnable {
         double timeTaken = finishTime / (double) 1000;
         System.out.println();
         System.out.println("All threads combined found " + totalNumberOfPasswordsFound + " out of " + passwordSet.size() + " passwords");
-        System.out.println("Total time taken: " + timeTaken + " seconds, to find " + whichCase + " passwords");
+        System.out.println("Total time taken: " + timeTaken + " seconds, to find " + whichCase + " passwords of length " + lengthOfPassword);
 
     }
 
