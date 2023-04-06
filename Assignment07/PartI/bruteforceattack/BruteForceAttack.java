@@ -16,18 +16,21 @@ public class BruteForceAttack implements Runnable {
     static final char[] letters = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
     char startingChar;
+
+    int numberOfCharsToConsider;
     static Set<String> passwordSet;
     MessageDigest digest;
 
     public int numberOfFoundPasswords;
     int lengthOfPassword;
 
-    public BruteForceAttack(char startingChar, Set<String> passwordSet, MessageDigest digest, int lengthOfPassword) {
+    public BruteForceAttack(char startingChar, Set<String> passwordSet, MessageDigest digest, int lengthOfPassword, int numberOfCharsToConsider) {
         this.startingChar = startingChar;
-        this.passwordSet = passwordSet;
+        BruteForceAttack.passwordSet = passwordSet;
         this.digest = digest;
         this.lengthOfPassword = lengthOfPassword;
         this.numberOfFoundPasswords = 0;
+        this.numberOfCharsToConsider = numberOfCharsToConsider;
     }
 
     public static char getChar(int i) {
@@ -83,44 +86,47 @@ public class BruteForceAttack implements Runnable {
         double max = Math.pow(26, len - 1);
         byte[] pass = new byte[len];
 
-        pass[0] = (byte) this.startingChar;
-        for (int k = 1; k < pass.length; k++) {
-            pass[k] = startLower;
-        }
+        for (int i = 0; i < this.numberOfCharsToConsider; i++) {
+//            System.out.println(this.startingChar+" "+this.numberOfCharsToConsider);
+            pass[0] = (byte) (this.startingChar + i);
+            for (int k = 1; k < pass.length; k++) {
+                pass[k] = startLower;
+            }
 
-        for (long j = 0; j < max; j++) {
-            int v = (int) (j % 26L);
-            if ((v == 0) && (j != 0)) {
+            for (long j = 0; j < max; j++) {
+                int v = (int) (j % 26L);
+                if ((v == 0) && (j != 0)) {
 
-                pass[1] = startLower;
-                for (int k = 2; k < pass.length; k++) {
-                    if (pass[k] == 'z') {
-                        if (k != pass.length - 1) {
-                            pass[k] = startLower;
-                            continue;
+                    pass[1] = startLower;
+                    for (int k = 2; k < pass.length; k++) {
+                        if (pass[k] == 'z') {
+                            if (k != pass.length - 1) {
+                                pass[k] = startLower;
+                                continue;
+                            } else {
+                                break;
+                            }
                         } else {
+                            int val = getInt((char) pass[k]);
+                            val++;
+                            pass[k] = (byte) letters[val];
                             break;
                         }
-                    } else {
-                        int val = getInt((char) pass[k]);
-                        val++;
-                        pass[k] = (byte) letters[val];
-                        break;
                     }
+                } else {
+                    pass[1] = (byte) letters[v];
                 }
-            } else {
-                pass[1] = (byte) letters[v];
-            }
 
-            byte[] encodedhash = digest.digest(pass);
+                byte[] encodedhash = digest.digest(pass);
 
-            String hashpass = BruteForceAttack.bytesToHex(encodedhash);
-            if (passwordSet.contains(hashpass)) {
-                String passString = new String(pass);
+                String hashpass = BruteForceAttack.bytesToHex(encodedhash);
+                if (passwordSet.contains(hashpass)) {
+                    String passString = new String(pass);
 //                System.out.println("found password " + passString);
-                numfound++;
+                    numfound++;
+                }
+                //System.out.println(new String(pass));
             }
-            //System.out.println(new String(pass));
         }
         this.numberOfFoundPasswords = numfound;
         System.out.println("found " + numfound + " out of " + passwordSet.size());
@@ -128,18 +134,52 @@ public class BruteForceAttack implements Runnable {
 
     public static void main(String[] args) throws NoSuchAlgorithmException {
         Set<String> passwordSet = hashedpasswords("hashedpassword.txt");
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+//        MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
-        int NUM_THREADS = 26;       //Also number of starting characters in consideration
-        int lengthOfPassword = 5;
+        int NUM_THREADS = 12;       //Also number of starting characters in consideration
+        int lengthOfPassword = 6;
         int totalNumberOfPasswordsFound = 0;
+
+        int numberOfStartCharsToProcess, leftoverChars, isOne;
+        int letterPos = 0;
+
+        String whichCase = "lowercase";
+        int charsToConsider = 0;
+
+        switch (whichCase) {
+            case "lowercase":
+                charsToConsider = 26;
+                break;
+            case "uppercase":
+                charsToConsider = 52;
+                break;
+            case "alphanumeric":
+                charsToConsider = 62;
+                break;
+        }
+        if (NUM_THREADS > charsToConsider)
+            NUM_THREADS = charsToConsider;
+        numberOfStartCharsToProcess = charsToConsider / NUM_THREADS;
+        leftoverChars = charsToConsider - numberOfStartCharsToProcess * NUM_THREADS;
 
         Thread[] threads = new Thread[NUM_THREADS];
         BruteForceAttack[] bruteForceAttacks = new BruteForceAttack[NUM_THREADS];
+
         for (int i = 0; i < NUM_THREADS; i++) {
-            bruteForceAttacks[i] = new BruteForceAttack(letters[i], passwordSet, MessageDigest.getInstance("SHA-256"), lengthOfPassword);
+            if (leftoverChars <= 0) {
+                isOne = 0;
+                leftoverChars = 0;
+            } else {
+                isOne = 1;
+            }
+//            System.out.println(leftoverChars+" "+ letterPos +" "+numberOfStartCharsToProcess+" "+ isOne);
+            bruteForceAttacks[i] = new BruteForceAttack(letters[letterPos], passwordSet, MessageDigest.getInstance("SHA-256"), lengthOfPassword, numberOfStartCharsToProcess + isOne);
             threads[i] = new Thread(bruteForceAttacks[i]);
+            --leftoverChars;
+            letterPos = letterPos + numberOfStartCharsToProcess + isOne;
         }
+
+        long startTime = System.currentTimeMillis();
         for (int i = 0; i < NUM_THREADS; i++) {
             threads[i].start();
         }
@@ -153,8 +193,11 @@ public class BruteForceAttack implements Runnable {
         for (int i = 0; i < NUM_THREADS; i++) {
             totalNumberOfPasswordsFound += bruteForceAttacks[i].numberOfFoundPasswords;
         }
-
-        System.out.println("All threads combined found " + totalNumberOfPasswordsFound + " out of " + passwordSet.size());
+        long finishTime = System.currentTimeMillis() - startTime;
+        double timeTaken = finishTime / (double) 1000;
+        System.out.println();
+        System.out.println("All threads combined found " + totalNumberOfPasswordsFound + " out of " + passwordSet.size() + " passwords");
+        System.out.println("Total time taken: " + timeTaken + " seconds, to find " + whichCase + " passwords");
 
     }
 
