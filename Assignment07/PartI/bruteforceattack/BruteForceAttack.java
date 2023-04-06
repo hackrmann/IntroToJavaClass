@@ -135,7 +135,7 @@ public class BruteForceAttack implements Runnable {
         Set<String> passwordSet = hashedpasswords("hashedpassword.txt");
 //        MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
-        int NUM_THREADS = 12;       //Also number of starting characters in consideration
+        int NUM_THREADS = 8;       //Also number of starting characters in consideration
         int lengthOfPassword = 6;
         int totalNumberOfPasswordsFound = 0;
 
