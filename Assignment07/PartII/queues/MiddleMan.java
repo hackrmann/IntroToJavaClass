@@ -21,7 +21,7 @@ public abstract class MiddleMan implements Runnable {
 	public void run() {
 		while (true) {
 			if (outObj == null) {
-				//synchronized(in) { // <-- you will uncomment this after you finish Question 1
+				synchronized(in) { // <-- you will uncomment this after you finish Question 1
 					if ((in.peek() != null) && (isInstance(in.peek().getClass()))) {
 						this.outObj = in.remove();
 						
@@ -29,7 +29,7 @@ public abstract class MiddleMan implements Runnable {
 						this.outObj = null;
 						continue;
 					}
-				//} // <-- uncomment this after you finish Question 1
+				} // <-- uncomment this after you finish Question 1
 			}
 			if (outObj != null) {
 				/* We have our object which we've removed from the
@@ -53,14 +53,16 @@ public abstract class MiddleMan implements Runnable {
 				 * output object on the queue and set the output
 				 * object to null
 				 */
-				if (out.size() >= 10) {
-					continue;
-				} else {
-					out.offer(outObj);
-					if (out.contains(null)) {
-						System.out.println("why did this happen?");
+				synchronized (out) {
+					if (out.size() >= 10) {
+						continue;
+					} else {
+						out.offer(outObj);
+						if (out.contains(null)) {
+							System.out.println("why did this happen?");
+						}
+						outObj = null;
 					}
-					outObj = null;
 				}
 				
 			}

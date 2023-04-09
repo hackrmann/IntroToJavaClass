@@ -7,6 +7,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 
 public class BruteForceAttack implements Runnable {
 
@@ -24,13 +25,16 @@ public class BruteForceAttack implements Runnable {
     public int numberOfFoundPasswords;
     int lengthOfPassword;
 
-    public BruteForceAttack(char startingChar, Set<String> passwordSet, MessageDigest digest, int lengthOfPassword, int numberOfCharsToConsider) {
+    int totalUniqueChars;
+
+    public BruteForceAttack(char startingChar, Set<String> passwordSet, MessageDigest digest, int lengthOfPassword, int numberOfCharsToConsider, int totalUniqueChars) {
         this.startingChar = startingChar;
         BruteForceAttack.passwordSet = passwordSet;
         this.digest = digest;
         this.lengthOfPassword = lengthOfPassword;
         this.numberOfFoundPasswords = 0;
         this.numberOfCharsToConsider = numberOfCharsToConsider;
+        this.totalUniqueChars = totalUniqueChars;
     }
 
     public static char getChar(int i) {
@@ -82,8 +86,9 @@ public class BruteForceAttack implements Runnable {
     public void run() {
         int numfound = 0;
         int len = this.lengthOfPassword;
-        double max = Math.pow(26, len - 1);
+        double max = Math.pow(totalUniqueChars, len - 1);
         byte[] pass = new byte[len];
+        char endingChar = getChar(this.totalUniqueChars - 1);
 
         for (int i = 0; i < this.numberOfCharsToConsider; i++) {
 //            System.out.println(this.startingChar+" "+this.numberOfCharsToConsider);
@@ -93,12 +98,12 @@ public class BruteForceAttack implements Runnable {
             }
 
             for (long j = 0; j < max; j++) {
-                int v = (int) (j % 26L);
+                int v = (int) (j % totalUniqueChars);
                 if ((v == 0) && (j != 0)) {
 
                     pass[1] = startLower;
                     for (int k = 2; k < pass.length; k++) {
-                        if (pass[k] == 'z') {
+                        if (pass[k] == endingChar) {
                             if (k != pass.length - 1) {
                                 pass[k] = startLower;
                                 continue;
@@ -136,24 +141,25 @@ public class BruteForceAttack implements Runnable {
 //        MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
         int NUM_THREADS = 8;       //Also number of starting characters in consideration
-        int lengthOfPassword = 6;
+        int lengthOfPassword = 4;
         int totalNumberOfPasswordsFound = 0;
 
         int numberOfStartCharsToProcess, leftoverChars, isOne;
         int letterPos = 0;
 
-        String whichCase = "lowercase";
+        String whichCase = "alphanumeric";
         int charsToConsider = 0;
+        int totalUniqueChars = 0;
 
         switch (whichCase) {
             case "lowercase":
-                charsToConsider = 26;
+                charsToConsider = totalUniqueChars = 26;
                 break;
             case "uppercase":
-                charsToConsider = 52;
+                charsToConsider = totalUniqueChars = 52;
                 break;
             case "alphanumeric":
-                charsToConsider = 62;
+                charsToConsider = totalUniqueChars = 62;
                 break;
         }
         if (NUM_THREADS > charsToConsider)
@@ -172,7 +178,9 @@ public class BruteForceAttack implements Runnable {
                 isOne = 1;
             }
 //            System.out.println(leftoverChars+" "+ letterPos +" "+numberOfStartCharsToProcess+" "+ isOne);
-            bruteForceAttacks[i] = new BruteForceAttack(letters[letterPos], passwordSet, MessageDigest.getInstance("SHA-256"), lengthOfPassword, numberOfStartCharsToProcess + isOne);
+            bruteForceAttacks[i] = new BruteForceAttack(letters[letterPos], passwordSet,
+                    MessageDigest.getInstance("SHA-256"), lengthOfPassword,
+                    numberOfStartCharsToProcess + isOne, totalUniqueChars);
             threads[i] = new Thread(bruteForceAttacks[i]);
             --leftoverChars;
             letterPos = letterPos + numberOfStartCharsToProcess + isOne;
@@ -192,6 +200,7 @@ public class BruteForceAttack implements Runnable {
         for (int i = 0; i < NUM_THREADS; i++) {
             totalNumberOfPasswordsFound += bruteForceAttacks[i].numberOfFoundPasswords;
         }
+
         long finishTime = System.currentTimeMillis() - startTime;
         double timeTaken = finishTime / (double) 1000;
         System.out.println();
