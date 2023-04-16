@@ -13,7 +13,7 @@ import java.net.Socket;
 public class ChatClient extends JFrame implements Runnable {
 
     private static int WIDTH = 400;
-    private static int HEIGHT = 300;
+    private static int HEIGHT = 500;
 
     DataOutputStream toServer = null;
     DataInputStream fromServer = null;
@@ -31,16 +31,12 @@ public class ChatClient extends JFrame implements Runnable {
         textArea.setEditable(false);
         this.setLayout(new BorderLayout());
         textField.addActionListener(new TextFieldListener());
-        JPanel topPanel = new JPanel(new GridLayout(2, 1));
-        JPanel controlPanel = new JPanel();
-        scroll = new JScrollPane(textArea);
-        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        //Add Textarea in to middle panel
-        controlPanel.add(scroll);
-        topPanel.add(controlPanel);
-        topPanel.add(textField);
+        JPanel bottomPanel = new JPanel(new GridLayout(1, 1));
+
+        bottomPanel.add(textField);
+        this.add(scroll, BorderLayout.CENTER);
         this.add(textArea, BorderLayout.CENTER);
-        this.add(topPanel, BorderLayout.SOUTH);
+        this.add(bottomPanel, BorderLayout.SOUTH);
         createMenu();
         this.setSize(ChatClient.WIDTH, ChatClient.HEIGHT);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,8 +51,12 @@ public class ChatClient extends JFrame implements Runnable {
         JMenuItem exitItem = new JMenuItem("Exit");
         connectItem.addActionListener((e) -> {
             try {
-                socket = new Socket("localhost", 8000);
+                socket = new Socket("localhost", 9898);
                 textArea.append("----------\nConnected!\n----------\n");
+
+                fromServer = new DataInputStream(socket.getInputStream());
+                Thread t = new Thread(this);
+                t.start();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -69,7 +69,14 @@ public class ChatClient extends JFrame implements Runnable {
     }
 
     public void run() {
-
+        while (true) {
+            try {
+                String getmessage = fromServer.readUTF();
+                textArea.append(getmessage + "\n");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     class TextFieldListener implements ActionListener {
@@ -77,13 +84,9 @@ public class ChatClient extends JFrame implements Runnable {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(socket == null) {
-                textArea.append("Chatroom not connected to Server. Please connect to server and try again\n");
+                textArea.append("Chatroom not connected to Server.\nPlease connect to server and try again!\n");
             }
             try {
-                // Create a socket to connect to the server
-                // Create an input stream to receive data from the server
-                fromServer = new DataInputStream(socket.getInputStream());
-                // Create an output stream to send data to the server
                 toServer = new DataOutputStream(socket.getOutputStream());
             } catch (IOException ex) {
                 textArea.append("ERROR: " + ex.toString() + '\n');
@@ -93,9 +96,6 @@ public class ChatClient extends JFrame implements Runnable {
                 String message = textField.getText().trim();
                 toServer.writeUTF(message);
                 toServer.flush();
-                String getmessage = fromServer.readUTF();
-
-                textArea.append(getmessage + "\n");
                 textField.setText("");
                 //socket.close();
             } catch (IOException ex) {

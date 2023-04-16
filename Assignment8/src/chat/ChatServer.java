@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class ChatServer extends JFrame implements Runnable {
 
     private static int WIDTH = 400;
-    private static int HEIGHT = 300;
+    private static int HEIGHT = 500;
 
     JTextArea textArea;
     private int clientNo;
@@ -67,7 +67,7 @@ public class ChatServer extends JFrame implements Runnable {
     @Override
     public void run() {
         try {
-            ServerSocket serverSocket = new ServerSocket(8000);
+            ServerSocket serverSocket = new ServerSocket(9898);
             while (true) {
                 Socket socket = serverSocket.accept();
                 InetAddress inetAddress = socket.getInetAddress();
@@ -112,16 +112,19 @@ public class ChatServer extends JFrame implements Runnable {
 
                     String message = inputFromClient.readUTF();
                     currentMessage = message;
-                    try {
-                        for (int i = 0; i < clients.size(); i++) {
-                            if (i != clientNum - 1)
-                                clients.get(i).writeUTF(this.clientNum + ": " + message);
-                            else
-                                clients.get(i).writeUTF(message);
+                    for (int i = 0; i < clients.size(); i++) {
+                        try {
+                            if(clients.get(i)!=null) {
+                                if (i != clientNum - 1)
+                                    clients.get(i).writeUTF(this.clientNum + ": " + message);
+                                else
+                                    clients.get(i).writeUTF(message);
+                            }
                         }
-                    } catch (IOException ioe) {
-                        textArea.append("Connection lost with client " + (clientNo-1) + "\n");
-                        break;
+                        catch (IOException ioe) {
+                            textArea.append("Connection lost with client " + (clientNo-1) + "\n");
+                            clients.set(i, null);
+                        }
                     }
 
                 }
