@@ -34,7 +34,6 @@ public class ChatClient extends JFrame implements Runnable {
         JPanel bottomPanel = new JPanel(new GridLayout(1, 1));
 
         bottomPanel.add(textField);
-        this.add(scroll, BorderLayout.CENTER);
         this.add(textArea, BorderLayout.CENTER);
         this.add(bottomPanel, BorderLayout.SOUTH);
         createMenu();
